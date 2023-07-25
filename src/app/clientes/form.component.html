@@ -54,12 +54,12 @@
         <div class="form-group row">
           <label for="createAt" class="col-form-label col-sm-2">Fecha</label>
           <div class="col-sm-6">
-            <input type="date" class="form-control" [(ngModel)]="cliente.createAt" name="createAt"> <!-- required -->
-            <!-- <div class="alert alert-danger" *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)">
-              <div *ngIf="apellido.errors && apellido.errors['required']">
-                Apellido es requerido
+            <input type="date" class="form-control" [(ngModel)]="cliente.createAt" name="createAt" #createAt="ngModel"> <!-- required -->
+            <div class="alert alert-danger" *ngIf="createAt.invalid && (createAt.dirty || createAt.touched)">
+              <div *ngIf="createAt.errors && createAt.errors['required']">
+                Fecha es requerido
               </div>
-            </div> -->
+            </div>
           </div>
         </div>
 
