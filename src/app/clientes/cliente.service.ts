@@ -20,14 +20,42 @@ export class ClienteService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  getClientes(): Observable<Cliente[]> {
+  getClientes(page: number): Observable<any> {
+
+    return this.http
+      .get(`${this.urlEndPoint}/page/${page}`)
+      .pipe(
+        tap((response: any) => {
+          // response de tipo Object
+          (response.content as Cliente[]).forEach( cliente => {
+            console.log(cliente.nombre);
+          })
+        }),
+        map((response: any) => {
+          (response.content as Cliente[]).map(cliente => {
+            cliente.nombre = cliente.nombre.toUpperCase();
+            return cliente;
+          });
+          return response;
+        }),
+        tap(response => {
+          console.log('ClienteService: tap 2');
+          // response de tipo Cliente porque el map retorna de tipo Cliente. Es importante el lugar donde ejecutamos el tap
+          (response.content as Cliente[]).forEach( cliente => {
+            console.log(cliente.nombre);
+          })
+        })
+      );
+  }
+
+  /*getClientes(): Observable<Cliente[]> {
     //return of(CLIENTES);
     //return this.http.get<Cliente[]>(this.urlEndPoint);
-    /*return this.http
-      .get(this.urlEndPoint)
-      .pipe(
-        map(response => response as Cliente[])
-      );*/
+    // return this.http
+    //   .get(this.urlEndPoint)
+    //   .pipe(
+    //     map(response => response as Cliente[])
+    //   );
 
     return this.http
       .get(this.urlEndPoint)
@@ -62,7 +90,7 @@ export class ClienteService {
           })
         })
       );
-  }
+  }*/
 
   create(cliente: Cliente): Observable<Cliente> {
     return this.http.post(this.urlEndPoint, cliente, { headers: this.httpHeaders }).pipe(
