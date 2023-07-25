@@ -1,0 +1,12 @@
+version: '3'
+services:
+  angular-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: ./.env
+    ports:
+      - $ANGULAR_LOCAL_PORT:$ANGULAR_DOCKER_PORT
+    volumes:
+      - .:/home/app
+    command: ["ng", "serve", "--host", "0.0.0.0"]
