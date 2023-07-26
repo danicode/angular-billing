@@ -8,10 +8,13 @@ import { DirectivaComponent } from './directiva/directiva.component';
 import { ClientesComponent } from './clientes/clientes.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { FormComponent } from './clientes/form.component';
+import { DetalleComponent } from './clientes/detalle/detalle.component';
+
 import { ClienteService } from './clientes/cliente.service';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+//import { registerLocaleData, CommonModule } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -39,6 +42,7 @@ const routes: Routes = [
     ClientesComponent,
     FormComponent,
     PaginatorComponent,
+    DetalleComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,6 +52,7 @@ const routes: Routes = [
     BrowserAnimationsModule,
     MatDatepickerModule,
     MatMomentDateModule,
+    //CommonModule,
     //MatNativeDateModule,
   ],
   providers: [ClienteService,{provide: LOCALE_ID, useValue: 'es' }],

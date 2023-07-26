@@ -1,3 +1,5 @@
+<detalle-cliente *ngIf="clienteSeleccionado" [cliente] ="clienteSeleccionado"></detalle-cliente>
+
 <div class="card border-primary mb-3">
     <div class="card-header">Clientes</div>
     <div class="card-body text-primary">
@@ -14,7 +16,7 @@
         <table class="table table-bordered table-striped" *ngIf="clientes && clientes.length > 0">
             <thead>
                 <tr>
-                    <th>Id</th>
+                    <th>#</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Email</th>
@@ -24,7 +26,14 @@
             </thead>
             <tbody>
                 <tr *ngFor="let cliente of clientes">
-                    <td>{{ cliente.id }}</td>
+                    <td><img (click)="abrirModal(cliente)" *ngIf="cliente?.foto"
+                        src="http://localhost:6868/api/uploads/img/{{cliente.foto}}" alt="{{cliente.foto}}" class="img-thumbnail rounded"
+                        style="width:64px; cursor: pointer;">
+            
+                        <img (click)="abrirModal(cliente)" *ngIf="!cliente?.foto"
+                          src="http://localhost:6868/images/no-usuario.png" alt="Sin foto" class="img-thumbnail rounded"
+                          style="width:64px; cursor: pointer;">
+                    </td>
                     <td>{{ cliente.nombre }}</td>
                     <td>{{ cliente.apellido | uppercase }}</td>
                     <td>{{ cliente.email }}</td>
