@@ -6,7 +6,7 @@
         <h5 class="card-title">Listado de clientes</h5>
 
         <div class="my-2 text-left">
-            <button class="btn btn-rounded btn-primary" type="button" [routerLink] = "['/clientes/form']">Crear cliente</button>
+            <button *ngIf="isAdmin" class="btn btn-rounded btn-primary" type="button" [routerLink] = "['/clientes/form']">Crear cliente</button>
         </div>
 
         <div *ngIf="clientes && clientes.length == 0" class="alert alert-info">
@@ -16,29 +16,29 @@
         <table class="table table-bordered table-striped" *ngIf="clientes && clientes.length > 0">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th *ngIf="isLogged">#</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Email</th>
                     <th>Fecha</th>
-                    <th>Acción</th>
+                    <th *ngIf="isAdmin">Acción</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let cliente of clientes">
-                    <td><img (click)="abrirModal(cliente)" *ngIf="cliente?.foto"
-                        src="http://localhost:6868/api/uploads/img/{{cliente.foto}}" alt="{{cliente.foto}}" class="img-thumbnail rounded"
+                    <td *ngIf="isLogged"><img (click)="abrirModal(cliente)" *ngIf="cliente?.foto"
+                        src="http://localhost:8080/api/uploads/img/{{cliente.foto}}" alt="{{cliente.foto}}" class="img-thumbnail rounded"
                         style="width:64px; cursor: pointer;">
             
                         <img (click)="abrirModal(cliente)" *ngIf="!cliente?.foto"
-                          src="http://localhost:6868/images/no-usuario.png" alt="Sin foto" class="img-thumbnail rounded"
+                          src="http://localhost:8080/images/no-usuario.png" alt="Sin foto" class="img-thumbnail rounded"
                           style="width:64px; cursor: pointer;">
                     </td>
                     <td>{{ cliente.nombre }}</td>
                     <td>{{ cliente.apellido | uppercase }}</td>
                     <td>{{ cliente.email }}</td>
                     <td>{{ cliente.createAt | date:"EEEE dd, MMMM yyyy" }}</td>
-                    <td>
+                    <td *ngIf="isAdmin">
                         <button type="button" name="button" class="btn btn-primary" [routerLink]="['/clientes/form', cliente.id]">Editar</button>
                         <button type="button" name="eliminar" class="btn btn-danger ml-2" (click)="delete(cliente)">Eliminar</button>
                     </td>

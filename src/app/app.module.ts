@@ -12,7 +12,7 @@ import { DetalleComponent } from './clientes/detalle/detalle.component';
 
 import { ClienteService } from './clientes/cliente.service';
 import { RouterModule, Routes } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 //import { registerLocaleData, CommonModule } from '@angular/common';
 import { registerLocaleData } from '@angular/common';
@@ -21,16 +21,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 //import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { LoginComponent } from './usuarios/login.component';
+import { AuthorizedComponent } from './authorized/authorized.component';
+import { authGuard } from './usuarios/guards/auth.guard';
+import { roleGuard } from './usuarios/guards/role.guard';
+import { TokenInterceptor } from './usuarios/interceptors/token.interceptor';
+import { AuthInterceptor } from './usuarios/interceptors/auth.interceptor';
+import { environment } from 'src/environments/environment';
 
 registerLocaleData(localeEs, 'es');
 
 const routes: Routes = [
-  {path: '', redirectTo: '/clientes', pathMatch: 'full'},
-  {path: 'directivas', component: DirectivaComponent},
-  {path: 'clientes', component: ClientesComponent},
-  {path: 'clientes/page/:page', component: ClientesComponent},
-  {path: 'clientes/form', component: FormComponent},
-  {path: 'clientes/form/:id', component: FormComponent},
+  { path: '', redirectTo: '/clientes', pathMatch: 'full' },
+  { path: 'directivas', component: DirectivaComponent },
+  { path: 'clientes', component: ClientesComponent },
+  { path: 'clientes/page/:page', component: ClientesComponent },
+  { path: 'clientes/form', component: FormComponent, canActivate: [ authGuard, roleGuard ], data: { role: environment .roles.admin } },
+  { path: 'clientes/form/:id', component: FormComponent, canActivate: [ authGuard, roleGuard ], data: { role: environment .roles.admin } },
+  { path: 'login', component: LoginComponent },
+  { path: 'authorized', component: AuthorizedComponent },
+  { path: '**', redirectTo: '', pathMatch: 'full'},
 ];
 
 @NgModule({
@@ -43,6 +53,8 @@ const routes: Routes = [
     FormComponent,
     PaginatorComponent,
     DetalleComponent,
+    LoginComponent,
+    AuthorizedComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,7 +67,11 @@ const routes: Routes = [
     //CommonModule,
     //MatNativeDateModule,
   ],
-  providers: [ClienteService,{provide: LOCALE_ID, useValue: 'es' }],
+  providers: [ClienteService,
+    {provide: LOCALE_ID, useValue: 'es' },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

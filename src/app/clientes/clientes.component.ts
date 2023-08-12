@@ -5,25 +5,34 @@ import { ModalService } from './detalle/modal.service';
 import swal from 'sweetalert2';
 import { tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../usuarios/auth.service';
 
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
   styleUrls: ['./clientes.component.css']
 })
-export class ClientesComponent implements OnInit{
+export class ClientesComponent implements OnInit {
 
   clientes:Cliente[];
   paginador: any;
   clienteSeleccionado: Cliente = new Cliente();
+  isAdmin: boolean;
+  isLogged: boolean;
 
-  constructor(private clienteService: ClienteService, private modalService: ModalService, private activatedRoute: ActivatedRoute) {
+  constructor(private clienteService: ClienteService, 
+    private modalService: ModalService, 
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthService) {
     this.clientes = [];
+    this.isAdmin = false;
+    this.isLogged = false;
   }
 
   ngOnInit(): void {
     
     this.activatedRoute.paramMap.subscribe(params => {
+      this.getLogged();
       let page: number = 0;
       const pageValue: string | null = params.get('page');
       if (pageValue !== null) {
@@ -73,15 +82,14 @@ export class ClientesComponent implements OnInit{
     }).then((result) => {
       if (result.isConfirmed) {
 
-        this.clienteService.delete(cliente.id).subscribe(response => {
-
-          this.clientes = this.clientes.filter(cli => cli != cliente);
-
-          swalWithBootstrapButtons.fire(
-            '¡Cliente Eliminado!',
-            `¡Cliente ${ cliente.nombre } eliminado con éxito!`,
-            'success'
-          );
+        this.clienteService.delete(cliente.id).subscribe(
+          () => {
+            this.clientes = this.clientes.filter(cli => cli != cliente);
+            swalWithBootstrapButtons.fire(
+              '¡Cliente Eliminado!',
+              `¡Cliente ${ cliente.nombre } eliminado con éxito!`,
+              'success'
+            );
         });
       }
     });
@@ -91,6 +99,11 @@ export class ClientesComponent implements OnInit{
     console.log("clientes.component.ts abrirModal");
     this.clienteSeleccionado = cliente;
     this.modalService.abrirModal();
+  }
+
+  getLogged(): void {
+    this.isLogged = this.authService.isAuthenticated();
+    this.isAdmin = this.authService.hasRole('ROLE_ADMIN');
   }
 
 }

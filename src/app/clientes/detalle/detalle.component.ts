@@ -5,6 +5,9 @@ import { ModalService } from './modal.service';
 
 import swal from 'sweetalert2';
 import { HttpEventType } from '@angular/common/http';
+import { AuthService } from 'src/app/usuarios/auth.service';
+import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'detalle-cliente',
@@ -18,11 +21,24 @@ export class DetalleComponent implements OnInit {
   titulo: string = "Detalle del cliente";
   private _fotoSeleccionada: File | null = null;
   progreso: number = 0;
+  isLogged: boolean;
+  isAdmin: boolean;
+  img_url = environment.client_img_url;
 
   constructor(private clienteService: ClienteService,
-    private _modalService: ModalService) { }
+    private _modalService: ModalService,
+    private authService: AuthService,
+    private router: Router) { 
+      this.isLogged = false;
+      this.isAdmin = false;
+    }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.router.events
+      .subscribe((event) => {
+        this.getLogged();
+      });
+  }
 
   get fotoSeleccionada(): File | null {
     return this._fotoSeleccionada;
@@ -75,6 +91,11 @@ export class DetalleComponent implements OnInit {
     this.modalService.cerrarModal();
     this.fotoSeleccionada = null;
     this.progreso = 0;
+  }
+
+  getLogged(): void {
+    this.isLogged = this.authService.isAuthenticated();
+    this.isAdmin = this.authService.hasRole('ROLE_ADMIN');
   }
 
 }
