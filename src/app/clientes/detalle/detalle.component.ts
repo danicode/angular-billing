@@ -97,5 +97,4 @@ export class DetalleComponent implements OnInit {
     this.isLogged = this.authService.isAuthenticated();
     this.isAdmin = this.authService.hasRole('ROLE_ADMIN');
   }
-
 }
