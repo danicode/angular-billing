@@ -37,7 +37,7 @@ export const environment = {
   // redirect_uri: 'http://localhost:4200/authorized',
   redirect_uri: base_uris.client.domain + base_uris.client.endpoints.authorized,
   // scope: 'openid profile',
-  scope: 'openid',
+  scope: 'openid profile',
   response_type: 'code',
   response_mode: 'form_post',
   code_challenge_method: 'S256',
@@ -63,7 +63,8 @@ export const environment = {
   client_img_url: base_uris.resource_server.domain + base_uris.resource_server.endpoints.img,
   roles: {
     admin: 'ROLE_ADMIN',
-    user: 'ROLE_USER'
+    user: 'ROLE_USER',
+    oidc: 'OIDC_USER'
   }
 };
 
