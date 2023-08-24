@@ -13,7 +13,7 @@ import { DetalleComponent } from './clientes/detalle/detalle.component';
 import { ClienteService } from './clientes/cliente.service';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,6 +26,12 @@ import { roleGuard } from './usuarios/guards/role.guard';
 import { TokenInterceptor } from './usuarios/interceptors/token.interceptor';
 import { AuthInterceptor } from './usuarios/interceptors/auth.interceptor';
 import { environment } from 'src/environments/environment';
+import { DetalleFacturaComponent } from './facturas/detalle-factura.component';
+import { FacturasComponent } from './facturas/facturas.component';
+
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 registerLocaleData(localeEs, 'es');
 
@@ -38,6 +44,8 @@ const routes: Routes = [
   { path: 'clientes/form/:id', component: FormComponent, canActivate: [ authGuard, roleGuard ], data: { role: environment .roles.admin } },
   { path: 'login', component: LoginComponent },
   { path: 'authorized', component: AuthorizedComponent },
+  { path: 'facturas/:id', component: DetalleFacturaComponent, canActivate: [authGuard, roleGuard], data: { role: environment .roles.user } },
+  { path: 'facturas/form/:clienteId', component: FacturasComponent, canActivate: [authGuard, roleGuard], data: { role: environment .roles.admin }},
   { path: '**', redirectTo: '', pathMatch: 'full'},
 ];
 
@@ -53,6 +61,8 @@ const routes: Routes = [
     DetalleComponent,
     LoginComponent,
     AuthorizedComponent,
+    DetalleFacturaComponent,
+    FacturasComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,8 +70,8 @@ const routes: Routes = [
     FormsModule,
     RouterModule.forRoot(routes),
     BrowserAnimationsModule,
-    MatDatepickerModule,
-    MatMomentDateModule,
+    MatDatepickerModule, MatMomentDateModule,
+    ReactiveFormsModule, MatAutocompleteModule, MatInputModule, MatFormFieldModule
   ],
   providers: [ClienteService,
     {provide: LOCALE_ID, useValue: 'es' },

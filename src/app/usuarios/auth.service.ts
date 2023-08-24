@@ -187,6 +187,7 @@ export class AuthService {
   isTokenExpired(): boolean {
     const payload = this.getPayload(this.accessToken);
     const now = new Date().getTime() / 1000;
+    console.log('payload.exp', payload.exp);
     return (payload.exp < now);
   }
 }

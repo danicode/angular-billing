@@ -19,7 +19,10 @@ const base_uris = {
       region: '/regiones',
       page: '/page/',
       upload: '/upload',
-      img: 'api/uploads/img/'
+      img: 'api/uploads/img/',
+      images: 'images/',
+      facturas: 'api/facturas',
+      filtrar_producto: '/filtrar-productos/'
     }
   },
   client: {
@@ -61,6 +64,12 @@ export const environment = {
   client_upload_url: base_uris.resource_server.domain + base_uris.resource_server.endpoints.client + base_uris.resource_server.endpoints.upload,
   // client_img_url: http://localhost:8080/api/uploads/img/
   client_img_url: base_uris.resource_server.domain + base_uris.resource_server.endpoints.img,
+  // client_img_url: http://localhost:8080/images/
+  client_images_url: base_uris.resource_server.domain + base_uris.resource_server.endpoints.images,
+  // factura_url: http://localhost:8080/api/facturas
+  factura_url: base_uris.resource_server.domain + base_uris.resource_server.endpoints.facturas,
+  // factura_url: http://localhost:8080/api/facturas/filtrar-productos/
+  factura_filtrar_producto: base_uris.resource_server.domain + base_uris.resource_server.endpoints.facturas + base_uris.resource_server.endpoints.filtrar_producto,
   roles: {
     admin: 'ROLE_ADMIN',
     user: 'ROLE_USER',

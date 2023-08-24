@@ -1,3 +1,4 @@
+import { Factura } from "../facturas/models/factura";
 import { Region } from "./region";
 export class Cliente {
   id: number;
@@ -7,6 +8,8 @@ export class Cliente {
   email: string;
   foto: string;
   region: Region | undefined;
+  //facturas: Array<Factura>;
+  facturas: Factura[] | null;
 
   constructor() {
     this.id = 0;
@@ -16,5 +19,6 @@ export class Cliente {
     this.email = '';
     this.foto = '';
     this.region = undefined;
+    this.facturas = [];
   }
 }

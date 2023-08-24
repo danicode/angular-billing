@@ -66,6 +66,7 @@ export class ClienteService {
   }
 
   create(cliente: Cliente): Observable<Cliente> {
+    //return this.http.post(this.urlEndPoint, cliente, {headers: {'Content-Type': 'application/json'} }).pipe(
     return this.http.post(this.urlEndPoint, cliente).pipe(
       map((response: any) => response.cliente as Cliente),
       catchError(e => {

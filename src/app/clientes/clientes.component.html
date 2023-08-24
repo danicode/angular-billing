@@ -1,4 +1,4 @@
-<detalle-cliente *ngIf="clienteSeleccionado" [cliente] ="clienteSeleccionado"></detalle-cliente>
+<detalle-cliente *ngIf="clienteSeleccionado && clienteSeleccionado.id !== 0" [cliente] ="clienteSeleccionado"></detalle-cliente>
 
 <div class="card border-primary mb-3">
     <div class="card-header">Clientes</div>
@@ -16,7 +16,7 @@
         <table class="table table-bordered table-striped" *ngIf="clientes && clientes.length > 0">
             <thead>
                 <tr>
-                    <th *ngIf="isLogged">#</th>
+                    <th *ngIf="isLogged" >#</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Email</th>
@@ -26,12 +26,12 @@
             </thead>
             <tbody>
                 <tr *ngFor="let cliente of clientes">
-                    <td *ngIf="isLogged"><img (click)="abrirModal(cliente)" *ngIf="cliente?.foto"
-                        src="http://localhost:8080/api/uploads/img/{{cliente.foto}}" alt="{{cliente.foto}}" class="img-thumbnail rounded"
+                    <td *ngIf="isLogged"><img (click)="abrirModal(cliente)" *ngIf="cliente?.foto" 
+                        src="{{img_url}}{{cliente.foto}}" alt="{{cliente.foto}}" class="img-thumbnail rounded"
                         style="width:64px; cursor: pointer;">
             
                         <img (click)="abrirModal(cliente)" *ngIf="!cliente?.foto"
-                          src="http://localhost:8080/images/no-usuario.png" alt="Sin foto" class="img-thumbnail rounded"
+                          src="{{images_url}}no-usuario.png" alt="Sin foto" class="img-thumbnail rounded"
                           style="width:64px; cursor: pointer;">
                     </td>
                     <td>{{ cliente.nombre }}</td>
@@ -39,8 +39,9 @@
                     <td>{{ cliente.email }}</td>
                     <td>{{ cliente.createAt | date:"EEEE dd, MMMM yyyy" }}</td>
                     <td *ngIf="isAdmin">
-                        <button type="button" name="button" class="btn btn-primary" [routerLink]="['/clientes/form', cliente.id]">Editar</button>
-                        <button type="button" name="eliminar" class="btn btn-danger ml-2" (click)="delete(cliente)">Eliminar</button>
+                        <button type="button" class="btn btn-success btn-sm" [routerLink]="['/facturas/form', cliente.id]">Crear factura</button>
+                        <button type="button" name="button" class="btn btn-primary ml-2 btn-sm" [routerLink]="['/clientes/form', cliente.id]">Editar</button>
+                        <button type="button" name="eliminar" class="btn btn-danger ml-2 btn-sm" (click)="delete(cliente)">Eliminar</button>
                     </td>
                 </tr>
             </tbody>

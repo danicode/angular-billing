@@ -6,6 +6,7 @@ import swal from 'sweetalert2';
 import { tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../usuarios/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-clientes',
@@ -16,9 +17,11 @@ export class ClientesComponent implements OnInit {
 
   clientes:Cliente[];
   paginador: any;
-  clienteSeleccionado: Cliente = new Cliente();
+  clienteSeleccionado: Cliente;
   isAdmin: boolean;
   isLogged: boolean;
+  images_url = environment.client_images_url;
+  img_url = environment.client_img_url;
 
   constructor(private clienteService: ClienteService, 
     private modalService: ModalService, 
@@ -27,6 +30,7 @@ export class ClientesComponent implements OnInit {
     this.clientes = [];
     this.isAdmin = false;
     this.isLogged = false;
+    this.clienteSeleccionado = new Cliente();
   }
 
   ngOnInit(): void {
@@ -96,7 +100,6 @@ export class ClientesComponent implements OnInit {
   }
 
   abrirModal(cliente: Cliente) {
-    console.log("clientes.component.ts abrirModal");
     this.clienteSeleccionado = cliente;
     this.modalService.abrirModal();
   }

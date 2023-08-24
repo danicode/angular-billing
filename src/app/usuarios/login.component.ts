@@ -17,7 +17,6 @@ export class LoginComponent {
   }
 
   login(): void {
-    console.log(this.usuario);
     if (this.usuario.username == null || this.usuario.password == null) {
       swal.fire('Error login', '¡Username o password vacías!', 'error');
       return;
